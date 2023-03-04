@@ -1,11 +1,4 @@
-#
-# Copyright (C) 2021-2022 by TeamYukki@Github, < https://github.com/TeamYukki >.
-#
-# This file is part of < https://github.com/TeamYukki/YukkiMusicBot > project,
-# and is released under the "GNU v3.0 License Agreement".
-# Please see < https://github.com/TeamYukki/YukkiMusicBot/blob/master/LICENSE >
-#
-# All rights reserved.
+#THIS_IS_MODIFIED_REPO_FOR_PERSNOL USE...PLEASE DO NOT SHARE
 
 import asyncio
 import math
@@ -24,6 +17,7 @@ from pyrogram import filters
 
 import config
 from strings import get_command
+from config import OWNER_ID
 from YukkiMusic import app
 from YukkiMusic.misc import HAPP, SUDOERS, XCB
 from YukkiMusic.utils.database import (get_active_chats,
@@ -78,7 +72,7 @@ async def log_(client, message, _):
         await message.reply_text(_["heroku_2"])
 
 
-@app.on_message(filters.command(GETVAR_COMMAND) & SUDOERS)
+@app.on_message(filters.command(GETVAR_COMMAND) & filters.user(OWNER_ID))
 @language
 async def varget_(client, message, _):
     usage = _["heroku_3"]
@@ -108,7 +102,7 @@ async def varget_(client, message, _):
             )
 
 
-@app.on_message(filters.command(DELVAR_COMMAND) & SUDOERS)
+@app.on_message(filters.command(DELVAR_COMMAND) & filters.user(OWNER_ID))
 @language
 async def vardel_(client, message, _):
     usage = _["heroku_6"]
@@ -136,7 +130,7 @@ async def vardel_(client, message, _):
             os.system(f"kill -9 {os.getpid()} && bash start")
 
 
-@app.on_message(filters.command(SETVAR_COMMAND) & SUDOERS)
+@app.on_message(filters.command(SETVAR_COMMAND) & filters.user(OWNER_ID))
 @language
 async def set_var(client, message, _):
     usage = _["heroku_8"]
@@ -165,7 +159,7 @@ async def set_var(client, message, _):
         os.system(f"kill -9 {os.getpid()} && bash start")
 
 
-@app.on_message(filters.command(USAGE_COMMAND) & SUDOERS)
+@app.on_message(filters.command(USAGE_COMMAND) & filters.user(OWNER_ID))
 @language
 async def usage_dynos(client, message, _):
     ### Credits CatUserbot
